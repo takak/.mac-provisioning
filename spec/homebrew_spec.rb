@@ -11,11 +11,13 @@ describe command('brew tap') do
 end
 
 target_packages = [
-  # Rubyの使用（管理はrbenvを使う）
+  # Ruby関連
   'readline',
   'openssl',
   'rbenv',
   'ruby-build',
+  # PHP関連
+  'phpenv',
   # 必要なソフト
   'mysql',
   'imagemagick',

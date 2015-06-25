@@ -11,12 +11,13 @@
       - caskroom/cask
     # formuraのインストール
     homebrew_packages:
-      # Rubyの使用（管理はrbenvを使う）
+      # Rubyの使用 (rbenvで管理)
       - { name: readline }
       - { name: openssl }
       - { name: openssl, state: linked, install_options: force }
       - { name: rbenv }
       - { name: ruby-build }
+      # PHPの使用 -> こちらで上手く行かなかったのでtask側で対処 TODO: 直したい
       # 必要なソフト
       - { name: mysql }
       - { name: imagemagick }
@@ -38,13 +39,13 @@
       - { name: google-japanese-ime }
 
   tasks:
+    - name: homebrew をアップデート
+      homebrew: update_homebrew=yes
+
     # brew tap
     - name: homebrew の tap リポジトリを追加
       homebrew_tap: tap={{ item }} state=present
       with_items: homebrew_taps
-
-    - name: homebrew をアップデート
-      homebrew: update_homebrew=yes
 
     # brew install
     - name: brew パッケージをインストール
@@ -86,3 +87,10 @@
       with_items:
           - {name: "rake", state: "present"}
           - {name: "serverspec", state: "present"}
+
+    # phpenvとphp-buildを導入
+    - name: phpenvのinstall
+      shell: brew install homebrew/php/phpenv
+    - name: php-buildのinstall
+      # Are you sure you want to continue connecting って言われるのをやめる
+      shell: echo "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config && git clone git://github.com/CHH/php-build ~/.phpenv/plugins/php-build
