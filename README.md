@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/takak/.mac-provisioning.svg?branch=master)](https://travis-ci.org/takak/.mac-provisioning)
+
 # 説明
 
 Ansibleを使って開発環境の自動構築を行います
