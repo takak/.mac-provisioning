@@ -11,13 +11,14 @@
       - caskroom/cask
     # formuraのインストール
     homebrew_packages:
-      # Rubyの使用 (rbenvで管理)
+      # RubyとPHPの使用準備 (anyenvのrbenv, phpenvで管理)
       - { name: readline }
       - { name: openssl }
       - { name: openssl, state: linked, install_options: force }
-      - { name: rbenv }
-      - { name: ruby-build }
-      # PHPの使用 -> こちらで上手く行かなかったのでtask側で対処 TODO: 直したい
+      - { name: re2c }
+      - { name: jpeg }
+      - { name: libpng }
+      - { name: libmcrypt }
       # 必要なソフト
       - { name: mysql }
       - { name: imagemagick }
@@ -31,11 +32,8 @@
     # Appのインストール
     homebrew_cask_packages:
       - { name: dropbox }
-      - { name: firefox }
-      - { name: google-chrome }
       - { name: java }
       - { name: flux }
-      - { name: atom }
       - { name: google-japanese-ime }
 
   tasks:
@@ -78,19 +76,12 @@
       shell: brew cask info {{ item }} > cask_info/{{ item }}
       with_items: cask_result.results | selectattr('changed') | map(attribute='item') | map(attribute='name') | list
 
-    # rbenvにRuby最新版を導入
-    - name: Install ruby by rbenv
-      shell: rbenv install $(rbenv install -l | grep -v - | tail -1)
+    # anyenvでrbenvとphpenvを導入
+    - name: Install rbenv & phpenv with anyenv
+      shell: git clone https://github.com/riywo/anyenv ~/.anyenv && exec $SHELL -l && anyenv install rbenv && anyenv install phpenv && exec $SHELL -l
     - name: Install gem packages
       sudo: yes
       gem: name={{ item.name }} state={{ item.state }} user_install=no
       with_items:
           - {name: "rake", state: "present"}
           - {name: "serverspec", state: "present"}
-
-    # phpenvとphp-buildを導入
-    - name: phpenvのinstall
-      shell: brew install homebrew/php/phpenv
-    - name: php-buildのinstall
-      # Are you sure you want to continue connecting って言われるのをやめる
-      shell: echo "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config && git clone git://github.com/CHH/php-build ~/.phpenv/plugins/php-build
