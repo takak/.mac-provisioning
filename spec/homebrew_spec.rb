@@ -14,10 +14,11 @@ target_packages = [
   # Ruby関連
   'readline',
   'openssl',
-  'rbenv',
-  'ruby-build',
   # PHP関連
-  'phpenv',
+  're2c',
+  'jpeg',
+  'libpng',
+  'libmcrypt',
   # 必要なソフト
   'mysql',
   'imagemagick',
