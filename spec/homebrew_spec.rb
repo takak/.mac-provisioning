@@ -18,7 +18,7 @@ target_packages = [
   're2c',
   'jpeg',
   'libpng',
-  'libmcrypt',
+  'mcrypt',
   # 必要なソフト
   'mysql',
   'imagemagick',

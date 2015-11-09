@@ -8,6 +8,8 @@ Ansibleを使って開発環境の自動構築を行います
 
 ## 下準備
 
+dotfileを先に適用しておく(anyenv用)
+
 ### terminal
 
 1. Homebrewを入れる
